@@ -23,6 +23,13 @@ Map out your plugin in terms of features, folders, and files. Use this blueprint
 
 Example Blueprint for a Plugin:
 
+# Plugin Name
+
+This plugin structure follows a modular organization for easier maintainability and scalability.
+
+## Directory Structure
+
+```plaintext
 plugin-name/
 ├── assets/                 # Static resources (CSS, JS, images)
 │   ├── css/                # CSS files
@@ -49,6 +56,7 @@ plugin-name/
 │   └── class-loader.php    # Handles autoloading
 ├── uninstall.php           # Cleanup code when the plugin is uninstalled
 ├── plugin-name.php         # Main plugin file
+
 
 
 4. Set Up Key Components
