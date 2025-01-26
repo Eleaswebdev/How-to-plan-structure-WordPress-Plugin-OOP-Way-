@@ -67,7 +67,7 @@ plugin-name/
 
 ---
 
-## 4. Set Up Key Components
+### 4. Set Up Key Components
 
 ### Main Plugin File
 This is the entry point of your plugin. It:
