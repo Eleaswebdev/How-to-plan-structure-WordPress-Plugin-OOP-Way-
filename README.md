@@ -30,7 +30,7 @@ The plugin is divided into logical components:
 
 ---
 
-## Plugin Structure
+### 3. Plugin Structure
 
 ```plaintext
 plugin-name/
@@ -64,127 +64,63 @@ plugin-name/
 ├── uninstall.php           # Cleanup code for uninstallation
 ├── plugin-name.php         # Main plugin file
 
-4. Set Up Key Components
 
-Main Plugin File
+---
 
+## 4. Set Up Key Components
+
+### Main Plugin File
 This is the entry point of your plugin. It:
+- Defines constants (e.g., plugin paths).
+- Includes the autoloader.
+- Initializes the plugin.
 
-Defines constants (e.g., plugin paths).
+### Folder Breakdown
+#### a. `assets/`
+Store your static files (CSS, JS, images). Divide them into `css/`, `js/`, and `images/` subfolders.
 
-Includes the autoloader.
+#### b. `includes/`
+Core plugin logic goes here. Divide the folder into subfolders for logical components:
+- `Admin/`: Admin panel features like settings or notices.
+- `Frontend/`: Public-facing features.
+- `Database/`: Handle database creation, retrieval, and updates.
+- `Traits/`: Shared functionality across multiple classes.
+- `Utilities/`: Helper classes, like logging or debugging tools.
 
-Initializes the plugin.
+#### c. `class-loader.php`
+Use an autoloader to dynamically include class files. This simplifies managing dependencies.
 
-Folder Breakdown
+#### d. Activation, Deactivation, and Uninstall
+- **Activator:** Create tables or initialize default settings during plugin activation.
+- **Deactivator:** Cleanup temporary data but leave essential data intact.
+- **Uninstall:** Fully clean up all plugin data and database changes.
 
-a. assets/
+---
 
-Store your static files (CSS, JS, images). Organize them into the following subfolders:
+## 5. Implement OOP Principles
+- **Single Responsibility:** Each class should focus on a single task (e.g., admin settings, frontend notices).
+- **Encapsulation:** Keep variables and methods private unless needed outside the class.
+- **Traits:** Use traits for shared logic between unrelated classes.
+- **Static Methods:** For utility functions like logging.
 
-css/: Stylesheets for both admin and frontend.
+---
 
-js/: JavaScript files for plugin functionality.
+## 6. Use Hooks to Connect WordPress
+WordPress plugins rely heavily on hooks (actions and filters). Plan which hooks you need:
+- **Activation/Deactivation Hooks:** For setup and cleanup.
+- **Admin Hooks:** For settings pages or admin notices.
+- **Frontend Hooks:** For enqueueing scripts or displaying features on the site.
 
-images/: Any images required for the plugin.
+---
 
-b. includes/
+## 7. Example Development Process
 
-This folder contains the core plugin logic. Organize it into the following subfolders:
-
-Admin/: Admin panel features like settings or notices.
-
-Frontend/: Public-facing features.
-
-Database/: Handle database creation, retrieval, and updates.
-
-Traits/: Shared functionality across multiple classes.
-
-Utilities/: Helper classes, like logging or debugging tools.
-
-c. class-loader.php
-
-Use an autoloader to dynamically include class files. This simplifies managing dependencies:
-
-class Autoloader {
-    public static function register() {
-        spl_autoload_register( function( $class ) {
-            $file = PLUGIN_DIR . 'includes/' . str_replace( '\\', '/', $class ) . '.php';
-            if ( file_exists( $file ) ) {
-                require_once $file;
-            }
-        } );
-    }
-}
-Autoloader::register();
-
-d. Activation, Deactivation, and Uninstall
-
-Activator:
-Create tables or initialize default settings during plugin activation.
-
-class Activator {
-    public static function activate() {
-        // Code to initialize database or default settings.
-    }
-}
-
-Deactivator:
-Cleanup temporary data but leave essential data intact.
-
-class Deactivator {
-    public static function deactivate() {
-        // Code to cleanup temporary data.
-    }
-}
-
-Uninstall:
-Fully clean up all plugin data and database changes.
-
-register_uninstall_hook( __FILE__, 'Plugin_Name_Uninstall::uninstall' );
-
-class Plugin_Name_Uninstall {
-    public static function uninstall() {
-        // Code to remove database tables and other plugin data.
-    }
-}
-
-5. Implement OOP Principles
-
-Key Principles:
-
-Single Responsibility: Each class should focus on a single task (e.g., admin settings, frontend notices).
-
-Encapsulation: Keep variables and methods private unless needed outside the class.
-
-Traits: Use traits for shared logic between unrelated classes.
-
-Static Methods: For utility functions like logging.
-
-6. Use Hooks to Connect WordPress
-
-Plan Required Hooks:
-
-Activation/Deactivation Hooks:
-
-register_activation_hook( __FILE__, [ 'Activator', 'activate' ] );
-register_deactivation_hook( __FILE__, [ 'Deactivator', 'deactivate' ] );
-
-Admin Hooks: For settings pages or admin notices.
-
-Frontend Hooks: For enqueueing scripts or displaying features on the site.
-
-7. Example Development Process
-
-Step-by-Step
-
-Define Constants:
-
+### Define Constants
+```php
 define( 'PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-Create the Autoloader:
-
+Create the Autoloader
 class Autoloader {
     public static function register() {
         spl_autoload_register( function( $class ) {
@@ -197,29 +133,17 @@ class Autoloader {
 }
 Autoloader::register();
 
-Activate/Deactivate Hooks:
-
+Activate/Deactivate Hooks
 register_activation_hook( __FILE__, [ 'Activator', 'activate' ] );
 register_deactivation_hook( __FILE__, [ 'Deactivator', 'deactivate' ] );
 
-Plan Features:
-
+Plan Features
 Break features into classes (e.g., Admin, Frontend).
-
 Use hooks to connect to WordPress.
-
-Build Each Component:
-
+Build Each Component
 Start small (e.g., create a settings page, then add admin notices).
 
-8. Test Your Plugin
-
-Testing Checklist:
-
-Debugging Tools: Enable WP_DEBUG for error reporting.
-
-Cross-Browser Testing: Check CSS/JS compatibility across different browsers.
-
-Database Check: Ensure tables are created and data persists during activation and deactivation.
-
-Unit Tests: Use PHPUnit for testing classes and methods.
+### 8. Test Your Plugin
+Debugging Tools: Use WP_DEBUG or a logger.
+Cross-Browser Testing: Check CSS/JS compatibility.
+Database Check: Ensure tables are created and data persists.
